@@ -19,6 +19,8 @@ jobs:
     - run: |
         cmake -B build
         cmake --build build --parallel
+      env:
+        FC: gfortran-9
 
     - run: pip install .[tests,lint]
 
@@ -27,7 +29,7 @@ jobs:
 
     - run: pytest
       env:
-        CC: gcc-9
+        FC: gfortran-9
 
 
   macos:
@@ -43,12 +45,14 @@ jobs:
     - run: |
         cmake -B build
         cmake --build build --parallel
+      env:
+        FC: gfortran-9
 
     - run: pip install .[tests]
 
     - run: pytest
       env:
-        CC: gcc-9
+        FC: gfortran-9
 
 
   windows:
@@ -62,9 +66,11 @@ jobs:
     - run: |
         cmake -B build
         cmake --build build --parallel
+      env:
+        FC: gfortran-9
 
     - run: pip install .[tests]
 
     - run: pytest
       env:
-        CC: gcc
+        FC: gfortran-9
