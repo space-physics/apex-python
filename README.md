@@ -17,6 +17,10 @@ pip install -e .
 
 ## Usage
 
+Typically, users would input Numpy ndarray of arbitrary dimension and shape.
+There is a fixed setup time for Apex of 5-10 seconds, but then it only takes about 100 ns per point.
+Thus it behooves the user to feed in a large array of points once, rather than call repeatedly.
+
 ```python
 import apexpy3
 
