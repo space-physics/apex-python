@@ -1,5 +1,7 @@
 # apex-python
 
+![Actions Status](https://github.com/space-physics/apex-python/workflows/ci/badge.svg)
+[![Language grade: Python](https://img.shields.io/lgtm/grade/python/g/space-physics/apex-python.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/space-physics/apex-python/context:python)
 
 clean Python interface to Apex without f2py--compute millions of points per second on laptop.
 
@@ -18,7 +20,12 @@ pip install -e .
 ```python
 import apexpy3
 
-dat = apexpy3.gc2gm()
+dat = apexpy3.geo2mag(yeardec=2018.5, glat=40, glon=-105)
+
+print(dat)
+```
+
+> {'gmlat': array([47.7939873]), 'gmlon': array([-37.5895653])}
 
 ### Benchmark
 
