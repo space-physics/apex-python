@@ -63,14 +63,17 @@ jobs:
       with:
         python-version: '3.x'
 
+    - run: cinst -y ninja
+
     - run: |
         cmake -B build
         cmake --build build --parallel
       env:
-        FC: gfortran-9
+        FC: gfortran
+        CMAKE_GENERATOR: Ninja
 
     - run: pip install -e .[tests]
 
     - run: pytest
       env:
-        FC: gfortran-9
+        FC: gfortran
