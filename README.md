@@ -15,6 +15,23 @@ cmake --build build
 pip install -e .
 ```
 
+## Ninja
+
+for Windows users and in general for best performance we suggest using the ninja back end.
+To use ninja, replace the directions above with:
+
+```sh
+pip install ninja
+
+cmake -B build -G Ninja
+
+cmake --build build
+```
+
+to make this change permanent, which we suggest in general for best performance,
+set environment variable `CMAKE_GENERATOR=Ninja`
+
+
 ## Usage
 
 Typically, users would input Numpy ndarray of arbitrary dimension and shape.
