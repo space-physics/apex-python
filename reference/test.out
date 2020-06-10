@@ -1,0 +1,49 @@
+date=2015.10        altmax=    1000.0
+nglat=  121    nglon=  201    ngalt=    7
+Example 1:  Calculate Apex parameters for an arbitrary location.
+    Use a reference height hr=80 km.
+hr    =    80.0000
+glat  =    40.0000
+glon  =  -105.0000
+alt   =   800.0000
+m(110)lat =   50.8559
+qdlat =    48.2741
+m(110)lon and qdlon =  -37.6765
+
+Example 2:  Calculate scaled velocities and electric-field components
+    for three cases at this location.
+Case 1. Purely eastward velocity, vx,vy,vz= 100.00   0.00   0.00
+ve1,ve2,ve3=   91.67  -14.36    6.65    Ed1,Ed2=  0.00031  0.00195
+Case 2. Purely northward velocity, vx,vy,vz=   0.00 100.00   0.00
+ve1,ve2,ve3=   -7.14  -75.21   52.01    Ed1,Ed2=  0.00160 -0.00015
+Case 3. Purely upward velocity, vx,vy,vz=   0.00   0.00 100.00
+ve1,ve2,ve3=    1.98  -33.39 -120.01    Ed1,Ed2=  0.00071  0.00004
+
+Example 3:  Calculate the geographic latitude and longitude of the footpoints
+    of this field line at 110 km in both hemispheres.
+110 km glat =   42.3848
+110 km glon = -104.5717
+opp. hem. 110 km glat =  -57.1787
+opp. hem. 110 km glon = -129.9222
+
+Example 4:  Use apex_q2g to get geographic coordinates from given quasi-dipole
+     coordinates, then reverse the calculation by calling apex_mall
+Choose quasi-dipole coordinates:           qdlat,qdlon,alt=  45.00   2.00 110.00
+apex_q2g returns geographic coordinates:   gdlat,gdlon    =  35.71 -75.44
+For input gdlat,gdlon,alt apex_mall returns: qdlat,qdlon,alt=  45.00   2.00 110.00
+
+Example 5: Use related routines subsol, magloctm and mlt2alon to obtain the
+     subsolar point, use it to get magnetic local time and solar zenith angle, 
+     then convert magnetic local time back to apex longitude
+Call cofrm for date =    2018.5
+Dipole pole colatitude, east longitude, and magnetic potential are:
+colat,elon,vp=   9.4936 -72.6593 190.0164 deg, deg, T-m
+subsol inputs: iyr,iday,ihr,imn,sec= 2018  182   12    0   0. UT
+subsol returns: sbsllat,sbsllon =   23.09    0.97 deg
+Then at glat,glon=   40.00 -105.00
+cossza gives solar zenith angle =   86.66 degrees
+apex_mall gives magnetic longitude =  -37.73
+magloctm returns: mlt =  4.299 hours
+mlt2alon returns magnetic longitude = -37.73 deg
+gc2gm returns: gmlat,gmlon =   47.79  -37.59 deg
+gm2gc returns: gclat,gclon =   40.00 -105.00 deg

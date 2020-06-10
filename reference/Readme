@@ -1,0 +1,10 @@
+10/2019
+  this is apex code with IGRF 12 coefficients (released 2015)
+  examples of how to use the code are given in test.f
+  to test the code:
+  compile test.f and apex.f90, run it, and compare the standard output with
+  test.out
+  
+1/2020
+  update the code with IGRF 13 coefficients (relases Dec 2019)
+  https://www.ngdc.noaa.gov/IAGA/vmod/igrf.html
