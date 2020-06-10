@@ -22,7 +22,7 @@ jobs:
       env:
         FC: gfortran-9
 
-    - run: pip install .[tests,lint]
+    - run: pip install -e .[tests,lint]
 
     - run: flake8
     - run: mypy .
@@ -48,7 +48,7 @@ jobs:
       env:
         FC: gfortran-9
 
-    - run: pip install .[tests]
+    - run: pip install -e .[tests]
 
     - run: pytest
       env:
@@ -69,7 +69,7 @@ jobs:
       env:
         FC: gfortran-9
 
-    - run: pip install .[tests]
+    - run: pip install -e .[tests]
 
     - run: pytest
       env:
