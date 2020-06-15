@@ -8,29 +8,18 @@ clean Python interface to Apex without f2py--compute millions of points per seco
 
 ## setup
 
-```sh
-cmake -B build
-cmake --build build
+ApexPy3 will build automatically using CMake on the first run.
+As usual with Python packages, install in development mode by:
 
+```sh
 pip install -e .
 ```
 
-## Ninja
-
-for Windows users and in general for best performance we suggest using the ninja back end.
-To use ninja, replace the directions above with:
+or
 
 ```sh
-pip install ninja
-
-cmake -B build -G Ninja
-
-cmake --build build
+python setup.py develop --user
 ```
-
-to make this change permanent, which we suggest in general for best performance,
-set environment variable `CMAKE_GENERATOR=Ninja`
-
 
 ## Usage
 

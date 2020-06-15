@@ -7,15 +7,18 @@ import tempfile
 import re
 import typing as T
 
-R = Path(__file__).resolve().parents[2] / "build"
-if not R.is_dir():
-    raise ImportError(f"build directory {R} not found, did you build Apex with CMake?")
+from .build import build
+
+Rs = Path(__file__).resolve().parents[2]
+Rb = Rs / "build"
+if not Rb.is_dir():
+    build(Rs, Rb)
 
 
 def mag2geo(yeardec: float, gmlat: np.ndarray, gmlon: np.ndarray) -> T.Dict[str, T.Any]:
-    fortexe = shutil.which("mag2geo", path=str(R))
+    fortexe = shutil.which("mag2geo", path=str(Rb))
     if not fortexe:
-        raise ImportError(f"mag2geo executable not found in {R}, did you build Apex with CMake?")
+        raise ImportError(f"mag2geo executable not found in {Rb}, did you build Apex with CMake?")
 
     gmlat = np.atleast_1d(gmlat)
     gmlon = np.atleast_1d(gmlon)
@@ -66,9 +69,9 @@ gmlat = """
 
 
 def geo2mag(yeardec: float, glat: np.ndarray, glon: np.ndarray) -> T.Dict[str, T.Any]:
-    fort_geo2mag = shutil.which("geo2mag", path=str(R))
+    fort_geo2mag = shutil.which("geo2mag", path=str(Rb))
     if not fort_geo2mag:
-        raise ImportError(f"geo2mag executable not found in {R}, did you build Apex with CMake?")
+        raise ImportError(f"geo2mag executable not found in {Rb}, did you build Apex with CMake?")
 
     glat = np.atleast_1d(glat)
     glon = np.atleast_1d(glon)
