@@ -1,7 +1,7 @@
-program geo2mag
+program mag2geo
 
 use, intrinsic :: iso_fortran_env, only: real64
-use apex, only : apex_setup,gc2gm
+use apex, only : apex_setup,gm2gc
 
 implicit none (type, external)
 
@@ -12,8 +12,8 @@ real, allocatable, dimension(:) :: glat, glon, gmlat, gmlon
 real(real64) :: tic, toc
 
 namelist / input_shape / N
-namelist / input / glat, glon
-namelist / output / gmlat, gmlon
+namelist / output / glat, glon
+namelist / input / gmlat, gmlon
 
 call get_command_argument(1, buf, status=i)
 if(i/=0) error stop 'missing decimal year e.g. 2020.35'
@@ -39,8 +39,8 @@ call cpu_time(toc)
 print '(F5.1,A)', toc-tic, ' seconds to setup Apex'
 
 call cpu_time(tic)
-do i = 1,size(glat)
-  call gc2gm(glat(i), glon(i), gmlat(i), gmlon(i))
+do i = 1,size(gmlat)
+  call gm2gc(gmlat(i), gmlon(i), glat(i), glon(i))
 end do
 call cpu_time(toc)
 print '(ES12.3,A,I8,A)', toc-tic, ' seconds to convert ', N, ' points.'

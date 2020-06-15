@@ -12,3 +12,6 @@ target_link_libraries(apex_benchmark apex)
 
 add_executable(geo2mag src/geo2mag.f90)
 target_link_libraries(geo2mag apex)
+
+add_executable(mag2geo src/mag2geo.f90)
+target_link_libraries(mag2geo apex)

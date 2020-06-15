@@ -12,6 +12,59 @@ if not R.is_dir():
     raise ImportError(f"build directory {R} not found, did you build Apex with CMake?")
 
 
+def mag2geo(yeardec: float, gmlat: np.ndarray, gmlon: np.ndarray) -> T.Dict[str, T.Any]:
+    fortexe = shutil.which("mag2geo", path=str(R))
+    if not fortexe:
+        raise ImportError(f"mag2geo executable not found in {R}, did you build Apex with CMake?")
+
+    gmlat = np.atleast_1d(gmlat)
+    gmlon = np.atleast_1d(gmlon)
+
+    orig_shape = gmlat.shape
+
+    nml = tempfile.NamedTemporaryFile(mode="w", suffix=".nml", delete=False)
+    f = nml.file  # type: ignore
+
+    f.write(
+        f"""
+&input_shape
+N = {gmlat.size}
+/\n
+"""
+    )
+
+    f.write(
+        """
+&input
+gmlat = """
+    )
+    f.write(",".join(gmlat.ravel().astype(str).tolist()) + "\n")
+
+    f.write("gmlon = ")
+    f.write(",".join(gmlon.ravel().astype(str).tolist()) + "\n")
+
+    f.write("/\n")
+    nml.close()  # avoids Permission Error in Fortran
+
+    cmd = [fortexe, f"{yeardec:.3f}", nml.name]
+    logging.info(" ".join(cmd))
+    ret = subprocess.run(cmd)
+    if ret.returncode != 0:
+        raise RuntimeError("Apex error")
+
+    dat = read_namelist(nml.name, "output")
+
+    try:
+        Path(nml.name).unlink()
+    except PermissionError:
+        pass
+
+    for k, v in dat.items():
+        dat[k] = v.reshape(orig_shape)
+
+    return dat
+
+
 def geo2mag(yeardec: float, glat: np.ndarray, glon: np.ndarray) -> T.Dict[str, T.Any]:
     fort_geo2mag = shutil.which("geo2mag", path=str(R))
     if not fort_geo2mag:
@@ -22,8 +75,8 @@ def geo2mag(yeardec: float, glat: np.ndarray, glon: np.ndarray) -> T.Dict[str, T
 
     orig_shape = glat.shape
 
-    infile = tempfile.NamedTemporaryFile(mode="w", suffix=".nml", delete=False)
-    f = infile.file  # type: ignore
+    nml = tempfile.NamedTemporaryFile(mode="w", suffix=".nml", delete=False)
+    f = nml.file  # type: ignore
 
     f.write(
         f"""
@@ -44,21 +97,18 @@ glat = """
     f.write(",".join(glon.ravel().astype(str).tolist()) + "\n")
 
     f.write("/\n")
-    infile.close()  # avoids Permission Error in Fortran
+    nml.close()  # avoids Permission Error in Fortran
 
-    outfile = tempfile.NamedTemporaryFile(suffix=".nml", delete=False)
-
-    cmd = [fort_geo2mag, f"{yeardec:.3f}", infile.name, outfile.name]
+    cmd = [fort_geo2mag, f"{yeardec:.3f}", nml.name]
     logging.info(" ".join(cmd))
     ret = subprocess.run(cmd)
     if ret.returncode != 0:
         raise RuntimeError("Apex error")
 
-    dat = read_namelist(outfile.name, "output")
+    dat = read_namelist(nml.name, "output")
 
     try:
-        Path(infile.name).unlink()
-        Path(outfile.name).unlink()
+        Path(nml.name).unlink()
     except PermissionError:
         pass
 
